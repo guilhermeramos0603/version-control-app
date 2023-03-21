@@ -9,7 +9,7 @@ class UpdateDialogWidget extends StatefulWidget {
 
   const UpdateDialogWidget(
       {Key? key,
-      this.version = " ",
+      required this.version,
       required this.description,
       required this.appLink,
       required this.allowDismissal})

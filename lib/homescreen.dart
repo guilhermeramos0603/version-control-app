@@ -12,13 +12,28 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String storeAppVersion = "";
+  String storeLink = "";
   @override
   void initState() {
     _checkVersion();
     super.initState();
   }
 
-  void _checkVersion() async {}
+  Future<bool> _checkVersion() async {
+    final newVersion = NewVersionPlus(
+      androidId: "com.snapchat.android",
+    );
+
+    final status = await newVersion.getVersionStatus();
+
+    if (status != null) {
+      storeLink = status.appStoreLink;
+      storeAppVersion = status.storeVersion;
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +46,15 @@ class _HomeScreenState extends State<HomeScreen> {
         child: GestureDetector(
           child: ElevatedButton(
             onPressed: () {
+              _checkVersion();
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return const UpdateDialogWidget(
+                    return UpdateDialogWidget(
+                        version: storeAppVersion,
                         description:
                             "Ops, parece que você não está na ultima versão do App. Clique abaixo para atualizar.",
-                        appLink:
-                            "https://play.google.com/store/apps/details?id=com.ulist&hl=pt_BR&gl=US&pli=1",
+                        appLink: storeLink,
                         allowDismissal: false);
                   });
             },
