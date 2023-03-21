@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutterversioncontrol/updatedialog.dart';
-import 'package:new_version/new_version.dart';
+import 'package:flutterversioncontrol/widgets/update_dialog_widget.dart';
+import 'package:new_version_plus/new_version_plus.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -14,47 +14,37 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    final newVersion = NewVersion(
-      androidId: 'org.telegram.messenger',
-    );
-
-    Timer(const Duration(milliseconds: 800), () {
-      checkNewVersion(newVersion);
-    });
-
+    _checkVersion();
     super.initState();
   }
 
-  void checkNewVersion(NewVersion newVersion) async {
-    final status = await newVersion.getVersionStatus();
-    if (status != null) {
-      if (status.canUpdate) {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return UpdateDialog(
-              allowDismissal: true,
-              description: status.releaseNotes!,
-              version: status.storeVersion,
-              appLink: status.appStoreLink,
-            );
-          },
-        );
-        // newVersion.showUpdateDialog(
-        //   context: context,
-        //   versionStatus: status,
-        //   dialogText: 'New Version is available in the store (${status.storeVersion}), update now!',
-        //   dialogTitle: 'Update is Available!',
-        // );
-      }
-    }
-  }
+  void _checkVersion() async {}
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text("Checar Versão do App"),
+      ),
       body: Center(
-        child: Text("Hello"),
+        child: GestureDetector(
+          child: ElevatedButton(
+            onPressed: () {
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const UpdateDialogWidget(
+                        description:
+                            "Ops, parece que você não está na ultima versão do App. Clique abaixo para atualizar.",
+                        appLink:
+                            "https://play.google.com/store/apps/details?id=com.ulist&hl=pt_BR&gl=US&pli=1",
+                        allowDismissal: false);
+                  });
+            },
+            child: const Text("Checar Versão"),
+          ),
+        ),
       ),
     );
   }

@@ -9,7 +9,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  new_version: ^0.3.0
+  new_version_plus: ^0.0.9
   url_launcher: ^6.1.2
   cupertino_icons: ^1.0.2
   app: ^0.0.3
