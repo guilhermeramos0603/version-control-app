@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class UpdateDialogWidget extends StatefulWidget {
+  final bool shouldPop;
   final String version;
   final String description;
   final String appLink;
@@ -9,6 +10,7 @@ class UpdateDialogWidget extends StatefulWidget {
 
   const UpdateDialogWidget(
       {Key? key,
+      required this.shouldPop,
       required this.version,
       required this.description,
       required this.appLink,
@@ -37,16 +39,21 @@ class _UpdateDialogWidgetState extends State<UpdateDialogWidget> {
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
 
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 500),
-      curve: Curves.fastLinearToSlowEaseIn,
-      child: Dialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
+    return WillPopScope(
+      onWillPop: () async {
+        return widget.shouldPop;
+      },
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastLinearToSlowEaseIn,
+        child: Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: content(context),
         ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        child: content(context),
       ),
     );
   }

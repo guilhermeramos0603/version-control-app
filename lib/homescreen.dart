@@ -51,6 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   context: context,
                   builder: (BuildContext context) {
                     return UpdateDialogWidget(
+                        shouldPop: false,
                         version: storeAppVersion,
                         description:
                             "Ops, parece que você não está na ultima versão do App. Clique abaixo para atualizar.",
